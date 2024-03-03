@@ -35,7 +35,7 @@
             android:layout_gravity="center"
             style="@style/Title_Text_Dark"
             android:ellipsize="end"
-            android:text="dasdasdasdasdasdasdasasdasdasdasdas"
+            tools:text="dasdasdasdasdasdasdasasdasdasdasdas"
             android:autoSizeMinTextSize="12sp"
             android:autoSizeStepGranularity="2sp"
             android:textAlignment="center"/>
@@ -113,7 +113,8 @@
                 android:id="@+id/clInfo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/margin_16"
+                android:layout_marginHorizontal="@dimen/margin_16"
+                android:layout_marginTop="@dimen/margin_32"
                 android:padding="@dimen/margin_16"
                 android:background="@drawable/rounded_background"
                 app:layout_constraintTop_toBottomOf="@+id/mvMap">
