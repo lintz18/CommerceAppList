@@ -1,6 +1,7 @@
 package com.jgcoding.kotlin.commercelistapp.domain.usecase
 
 import com.jgcoding.kotlin.commercelistapp.domain.Repository
+import com.jgcoding.kotlin.commercelistapp.domain.model.Commerce
 import javax.inject.Inject
 
 class GetCommercesUseCase @Inject constructor(private val repository: Repository) {
@@ -10,11 +11,12 @@ class GetCommercesUseCase @Inject constructor(private val repository: Repository
 
 //        return if (commerces.isNotEmpty()) {
 //            repository.deleteAllCommercesDatabase()
-//            repository.insertAllCommercesInDataBase(commerces)
+////            repository.insertAllCommercesInDataBase(commerces)
 //            commerces
-//        } else {
-//            repository.getCommercesDatabase()
-//
+//        }
+//        else {
+////            repository.getCommercesDatabase()
+//            repository.getCommercesApi()
 //        }
 //    }
 }
