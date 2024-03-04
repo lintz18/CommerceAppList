@@ -13,6 +13,7 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.target.BitmapImageViewTarget
 import com.jgcoding.kotlin.commercelistapp.R
+import com.jgcoding.kotlin.commercelistapp.core.Converter
 import com.jgcoding.kotlin.commercelistapp.databinding.ItemCommerceBinding
 import com.jgcoding.kotlin.commercelistapp.domain.model.Commerce
 
@@ -40,13 +41,15 @@ class CommerceViewHolder(
             Glide.with(context)
                 .load(commerce.photo)
                 .centerCrop()
-                .error(com.google.android.material.R.drawable.mtrl_ic_error)
+                .placeholder(R.drawable.placeholder)
+                .error(R.drawable.placeholder)
                 .transform( CenterCrop(), RoundedCorners(16))
                 .into(ivCommerceImage)
 
             tvCommerceName.text = commerce.name ?: ""
             tvCommerceDescription.text = commerce.address ?: ""
-            tvDistance.text = "${commerce.distance}m."
+            val distance = if(commerce.distance > 1000) "${Converter.convertIntoKms(commerce.distance.toDouble())}km" else "${commerce.distance}m."
+            tvDistance.text = distance
 
             Log.i(TAG, "Category: ${commerce.category}")
             when (commerce.category) {

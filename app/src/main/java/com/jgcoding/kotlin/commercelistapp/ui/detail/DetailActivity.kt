@@ -126,7 +126,8 @@ class DetailActivity : AppCompatActivity(), OnMapReadyCallback {
             Glide.with(applicationContext)
                 .load(commerce.photo)
                 .centerCrop()
-                .error(com.google.android.material.R.drawable.mtrl_ic_error)
+                .placeholder(R.drawable.placeholder)
+                .error(R.drawable.placeholder)
                 .transform( CenterCrop(), RoundedCorners(16))
                 .into(ivRefresh)
 
