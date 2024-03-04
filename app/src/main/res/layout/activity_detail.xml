@@ -118,26 +118,14 @@
                 android:padding="@dimen/margin_16"
                 android:background="@drawable/rounded_background"
                 app:layout_constraintTop_toBottomOf="@+id/mvMap">
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/cvRefresh"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:cardBackgroundColor="@android:color/transparent"
-                    app:cardElevation="0dp"
-                    android:clickable="true"
+                <ImageView
+                    android:id="@+id/ivRefresh"
                     android:layout_width="50dp"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    app:cardCornerRadius="@dimen/margin_8">
-                    <ImageView
-                        android:id="@+id/ivRefresh"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/placeholder_fullimage"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"/>
-                </androidx.cardview.widget.CardView>
+                    android:layout_height="50dp"
+                    android:scaleType="centerCrop"
+                    tools:src="@drawable/placeholder_fullimage"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"/>
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -147,7 +135,7 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/cvRefresh">
+                    app:layout_constraintStart_toEndOf="@+id/ivRefresh">
                     <TextView
                         android:id="@+id/tvDetail1"
                         android:layout_width="match_parent"

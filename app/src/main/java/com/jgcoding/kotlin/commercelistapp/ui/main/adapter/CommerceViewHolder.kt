@@ -7,6 +7,11 @@ import android.util.Log
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.resource.bitmap.BitmapTransitionOptions.withCrossFade
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.bumptech.glide.request.target.BitmapImageViewTarget
 import com.jgcoding.kotlin.commercelistapp.R
 import com.jgcoding.kotlin.commercelistapp.databinding.ItemCommerceBinding
 import com.jgcoding.kotlin.commercelistapp.domain.model.Commerce
@@ -31,9 +36,12 @@ class CommerceViewHolder(
 
     fun bind(commerce: Commerce) {
         binding.apply {
-            Glide.with(itemView)
+
+            Glide.with(context)
                 .load(commerce.photo)
+                .centerCrop()
                 .error(com.google.android.material.R.drawable.mtrl_ic_error)
+                .transform( CenterCrop(), RoundedCorners(16))
                 .into(ivCommerceImage)
 
             tvCommerceName.text = commerce.name ?: ""

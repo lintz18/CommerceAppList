@@ -22,6 +22,7 @@ class RepositoryImpl @Inject constructor(
 
     //region API
     override suspend fun getCommercesApi(): List<Commerce> {
+//        val response = apiService.getCommerces()
         runCatching { apiService.getCommerces() }
             .onSuccess { commerceModel ->
                 for (commerce in commerceModel){

@@ -7,6 +7,7 @@ import android.location.Location
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -15,7 +16,9 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.location.LocationServices
+import com.jgcoding.kotlin.commercelistapp.R
 import com.jgcoding.kotlin.commercelistapp.core.Extensions.setStatusBar
+import com.jgcoding.kotlin.commercelistapp.core.Network
 import com.jgcoding.kotlin.commercelistapp.databinding.ActivityMainBinding
 import com.jgcoding.kotlin.commercelistapp.domain.model.Commerce
 import com.jgcoding.kotlin.commercelistapp.ui.detail.DetailActivity
@@ -57,6 +60,9 @@ class MainActivity : AppCompatActivity() {
         Log.i(TAG, "onCreate: $data")
         Log.i(TAG, "onCreate: $action")
 
+        if(!Network.checkConnectivity(this)) {
+            Toast.makeText(this, getString(R.string.error_connectivity), Toast.LENGTH_SHORT).show()
+        }
         getMyCoordinates()
         setUpview()
     }

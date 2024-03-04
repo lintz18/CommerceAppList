@@ -10,6 +10,8 @@ import androidx.core.text.isDigitsOnly
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -123,7 +125,9 @@ class DetailActivity : AppCompatActivity(), OnMapReadyCallback {
 
             Glide.with(applicationContext)
                 .load(commerce.photo)
+                .centerCrop()
                 .error(com.google.android.material.R.drawable.mtrl_ic_error)
+                .transform( CenterCrop(), RoundedCorners(16))
                 .into(ivRefresh)
 
             tvDetail1.text = "${getString(R.string.category_info)} ${commerce.category}"
