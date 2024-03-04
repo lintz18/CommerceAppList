@@ -8,6 +8,7 @@ import com.jgcoding.kotlin.commercelistapp.domain.Repository
 import com.jgcoding.kotlin.commercelistapp.domain.model.Commerce
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
@@ -22,7 +23,6 @@ class RepositoryImpl @Inject constructor(
 
     //region API
     override suspend fun getCommercesApi(): List<Commerce> {
-//        val response = apiService.getCommerces()
         runCatching { apiService.getCommerces() }
             .onSuccess { commerceModel ->
                 for (commerce in commerceModel){
