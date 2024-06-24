@@ -48,7 +48,12 @@ android {
     buildFeatures {
         viewBinding = true
         buildConfig = true
+        compose = true
     }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.2"
+    }
+
 }
 
 dependencies {
@@ -105,6 +110,13 @@ dependencies {
     implementation("com.google.maps.android:android-maps-utils:2.3.0")
     implementation ("com.google.maps.android:maps-utils-ktx:3.4.0")
     implementation("com.google.android.gms:play-services-location:21.1.0")
+
+
+    //COMPOSE
+    implementation("androidx.activity:activity-compose:1.7.2")
+    implementation("androidx.compose.ui:ui:1.4.3")
+    implementation("androidx.compose.ui:ui-tooling-preview:1.4.3")
+    implementation("androidx.compose.material3:material3:1.1.1")
 }
 
 kapt {
