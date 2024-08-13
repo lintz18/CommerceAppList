@@ -4,6 +4,7 @@ import android.Manifest
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -75,12 +76,31 @@ fun MainScreen(
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 8.dp)
+                        .padding(top = 32.dp, start = 16.dp, end = 16.dp)
                         .background(color = gray_light),
                     horizontalArrangement = Arrangement.spacedBy(16.dp),
                 ) {
-                    SimpleCard(modifier = Modifier.weight(1f), topText = "top", bottomText = "btoom")
-                    SimpleCard(modifier = Modifier.weight(1f), topText = "top", bottomText = "btoom")
+                    SimpleCard(
+                        modifier = Modifier.weight(1f),
+                        topText = "${commerces.size}",
+                        bottomText = stringResource(id = R.string.commerces)
+                    )
+                    SimpleCard(
+                        modifier = Modifier.weight(1f),
+                        backgroundColor = white,
+                        topText = "top",
+                        topTextColor = orange,
+                        bottomText = stringResource(id = R.string.near_1km),
+                        bottomTextColor = black
+                    )
+                }
+
+                LazyRow {
+                    items(commerces.sortedBy {
+                        it.distance
+                    }, key = { it.id }) {
+                        CommerceItem(commerce = it) { onCommerceClick(it) }
+                    }
                 }
 
                 LazyVerticalGrid(

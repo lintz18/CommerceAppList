@@ -35,7 +35,7 @@ fun SimpleCard(
         ) {
             Text(
                 text = topText,
-                fontSize = 20.sp,
+                fontSize = 30.sp,
                 color = topTextColor
             )
             Text(
