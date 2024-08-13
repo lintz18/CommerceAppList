@@ -1,6 +1,7 @@
 package com.jgcoding.kotlin.commercelistapp.ui.main
 
 import android.Manifest
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.*
@@ -11,13 +12,15 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.jgcoding.kotlin.commercelistapp.R
-import com.jgcoding.kotlin.commercelistapp.core.systemdesign.CommerceListTheme
+import com.jgcoding.kotlin.commercelistapp.core.systemdesign.*
 import com.jgcoding.kotlin.commercelistapp.domain.model.Commerce
 import com.jgcoding.kotlin.commercelistapp.ui.common.*
+import com.jgcoding.kotlin.commercelistapp.ui.compose.components.SimpleCard
 import com.jgcoding.kotlin.commercelistapp.ui.main.viewmodel.MainViewModel
 
 
@@ -50,24 +53,48 @@ fun MainScreen(
             state = state,
             topBar = {
                 TopAppBar(
-                    title = { Text(text = stringResource(id = R.string.app_name)) },
+                    title = {
+                        Text(
+                            modifier = Modifier.fillMaxWidth(),
+                            textAlign = TextAlign.Center,
+                            text = stringResource(id = R.string.commerces_list)
+                        )
+                    },
                     scrollBehavior = homeState.scrollBehavior,
+                    colors = TopAppBarDefaults.topAppBarColors(
+                        containerColor = white,
+                        scrolledContainerColor = white
+                    )
                 )
             },
             modifier = Modifier.nestedScroll(homeState.scrollBehavior.nestedScrollConnection),
             contentWindowInsets = WindowInsets.safeDrawing
         ) { padding, commerces ->
-            LazyVerticalGrid(
-                columns = GridCells.Adaptive(120.dp),
-                contentPadding = padding,
-                horizontalArrangement = Arrangement.spacedBy(4.dp),
-                verticalArrangement = Arrangement.spacedBy(4.dp),
-                modifier = Modifier.padding(horizontal = 4.dp)
-            ) {
-                items(commerces.sortedBy {
-                     it.distance
-                }, key = { it.id }) {
-                    CommerceItem(commerce = it) { onCommerceClick(it) }
+
+            Column(modifier = Modifier.padding(top = padding.calculateTopPadding())) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp, vertical = 8.dp)
+                        .background(color = gray_light),
+                    horizontalArrangement = Arrangement.spacedBy(16.dp),
+                ) {
+                    SimpleCard(modifier = Modifier.weight(1f), topText = "top", bottomText = "btoom")
+                    SimpleCard(modifier = Modifier.weight(1f), topText = "top", bottomText = "btoom")
+                }
+
+                LazyVerticalGrid(
+                    columns = GridCells.Adaptive(120.dp),
+                    contentPadding = padding,
+                    horizontalArrangement = Arrangement.spacedBy(4.dp),
+                    verticalArrangement = Arrangement.spacedBy(4.dp),
+                    modifier = Modifier.padding(horizontal = 4.dp)
+                ) {
+                    items(commerces.sortedBy {
+                        it.distance
+                    }, key = { it.id }) {
+                        CommerceItem(commerce = it) { onCommerceClick(it) }
+                    }
                 }
             }
         }

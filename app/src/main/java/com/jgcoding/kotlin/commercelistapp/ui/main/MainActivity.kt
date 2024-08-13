@@ -17,6 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.rememberNavController
@@ -46,14 +47,9 @@ class MainActivity : AppCompatActivity() {
         const val ID = "ID"
     }
 
-    private lateinit var binding: ActivityMainBinding
-    private val viewModel by viewModels<MainViewModel>()
-    private lateinit var commerceAdapter: CommerceAdapter
-
     private var coordinates: Location = Location("MyLocation")
     private val locationPermissionCode = 2
 
-    private var list = emptyList<Commerce>()
     private var stationList = emptyList<Commerce>()
     private var foodList = emptyList<Commerce>()
     private var leisureList = emptyList<Commerce>()
@@ -72,31 +68,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             Navigation()
-//            CommerceListTheme {
-//                val navController = rememberNavController()
-//                // A surface container using the 'background' color from the theme
-//                Surface(
-//                    color = MaterialTheme.colorScheme.background
-//                ) {
-//                    //TODO SCREEN AND NAVIGATION
-//                    Toolbar(navController = navController, title = getString(R.string.commerces_list), isBack = false)
-//                }
-//            }
         }
 
-//        binding = ActivityMainBinding.inflate(layoutInflater)
-//        setContentView(binding.root)
-//
-//        val action: String? = intent?.action
-//        val data: Uri? = intent?.data
-//        Log.i(TAG, "onCreate: $data")
-//        Log.i(TAG, "onCreate: $action")
-//
-//        if(!Network.checkConnectivity(this)) {
-//            Toast.makeText(this, getString(R.string.error_connectivity), Toast.LENGTH_SHORT).show()
-//        }
-//        getMyCoordinates()
-//        setUpview()
+        val insetsController = WindowInsetsControllerCompat(window, window.decorView)
+        insetsController.isAppearanceLightStatusBars = true
     }
 
     override fun onNewIntent(intent: Intent?) {
@@ -129,88 +104,7 @@ class MainActivity : AppCompatActivity() {
     }
     //endregion
 
-    //region VIEW
-    private fun setUpview() {
-        setStatusBar()
-        setSupportActionBar(binding.toolbar)
-
-        binding.apply {
-            cvCategoryAll.setOnClickListener{
-                commerceAdapter.updateList(list)
-            }
-
-            cvCategory1.setOnClickListener {
-                commerceAdapter.updateList(stationList)
-            }
-
-            cvCategory2.setOnClickListener {
-                commerceAdapter.updateList(foodList)
-            }
-
-            cvCategory3.setOnClickListener {
-                commerceAdapter.updateList(leisureList)
-            }
-        }
-
-//        initUIState()
-    }
-
-    private fun setUpRecyclerView(list: MutableList<Commerce>) {
-        commerceAdapter = CommerceAdapter(list) { id ->
-            navigateToDetail(id)
-        }
-
-        binding.rvCommerces.apply {
-            adapter = commerceAdapter
-            layoutManager = LinearLayoutManager(context)
-        }
-    }
-
-    private fun loadingState() {
-        binding.includeProgress.root.isVisible = true
-    }
-
-    private fun errorState() {
-        binding.includeProgress.root.isVisible = false
-    }
-
-    private fun successState(state: List<Commerce>) {
-        var counterOfNearCommerces = 0
-        for (commerce in state) {
-            commerce.setDistance(coordinates)
-            if (commerce.checkDistance())
-                counterOfNearCommerces++
-        }
-
-        list = state.sortedBy {
-            it.distance
-        }
-
-        binding.includeProgress.root.isVisible = false
-        binding.apply {
-            txtNumberCommerces.text = state.size.toString()
-            txtNumberCommercesNear.text = counterOfNearCommerces.toString()
-        }
-
-        setUpRecyclerView(list.toMutableList())
-
-        prepareFilteredLists(list)
-    }
-    //endregion
-
     //region METHODS
-//    private fun initUIState() {
-//        lifecycleScope.launch {
-//            viewModel.uiState.collect {
-//                when (it) {
-//                    is Result.Error -> errorState()
-//                    Result.Loading -> loadingState()
-//                    is Result.Success -> successState(it.data)
-//                }
-//            }
-//        }
-//    }
-
     private fun getMyCoordinates() {
         val fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
@@ -245,12 +139,6 @@ class MainActivity : AppCompatActivity() {
         leisureList = list.filter {
             it.category.uppercase().contains("LEISURE")
         }
-    }
-
-    private fun navigateToDetail(id: Int) {
-        val intent = Intent(this, DetailActivity::class.java)
-        intent.putExtra(ID, id)
-        startActivity(intent)
     }
     //endregion
 }
