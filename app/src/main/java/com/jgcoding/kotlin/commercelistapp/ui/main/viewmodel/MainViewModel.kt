@@ -1,60 +1,41 @@
 package com.jgcoding.kotlin.commercelistapp.ui.main.viewmodel
 
+import android.location.Location
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jgcoding.kotlin.commercelistapp.domain.model.Commerce
-import com.jgcoding.kotlin.commercelistapp.domain.usecase.GetCommercesDatabaseUseCase
-import com.jgcoding.kotlin.commercelistapp.domain.usecase.GetCommercesUseCase
-import com.jgcoding.kotlin.commercelistapp.domain.usecase.SaveCommerceUseCase
+import com.jgcoding.kotlin.commercelistapp.domain.usecase.*
+import com.jgcoding.kotlin.commercelistapp.ui.common.Result
+import com.jgcoding.kotlin.commercelistapp.ui.common.stateAsResultIn
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val getCommercesUseCase: GetCommercesUseCase,
-    private val saveCommerceUseCase: SaveCommerceUseCase,
-    private val getCommercesDatabaseUseCase: GetCommercesDatabaseUseCase
+    private val getCommercesUseCase: GetCommercesUseCase
 ) :
     ViewModel() {
 
-    private var _uiState = MutableStateFlow<MainViewState>(MainViewState.Loading)
-    val uiState: StateFlow<MainViewState> = _uiState
+    private var coordinates: Location = Location("MyLocation")
 
-    init {
-        viewModelScope.launch {
-            _uiState.value = MainViewState.Loading
-            val result = withContext(Dispatchers.IO) {
-                getCommercesUseCase()
-            }
-            if (result.isNullOrEmpty()) {
-//                _uiState.value = MainViewState.Error("No hay comercios")
-                withContext(Dispatchers.IO) {
-                    getCommercesDatabaseUseCase().collect{
-                        if(it.isNotEmpty())
-                            _uiState.value = MainViewState.Success(it)
-                        else
-                            _uiState.value = MainViewState.Error("No hay comercios en la base de datos")
-                    }
+    private val uiReady = MutableStateFlow(false)
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val state: StateFlow<Result<List<Commerce>>> = uiReady
+        .filter { it }
+        .flatMapLatest {
+            getCommercesUseCase().onEach {
+                it.map { commerce ->
+                    commerce.setDistance(coordinates)
                 }
-            }else {
-                _uiState.value = MainViewState.Success(result)
-                //Se podría hacer un delete antes cada x tiempo para limpiar las entradas antiguas y que ya no estén en la lista
-                // o buscar los objetos que estan en la base de datos y no en la lista para actualizar los que ya están y borrar las que no
-                saveCommerceUseCase(result)
             }
         }
+        .stateAsResultIn(viewModelScope)
+
+    fun onUiReady() {
+        uiReady.value = true
     }
 
-}
-
-sealed class MainViewState {
-    data object Loading : MainViewState()
-    data class Success(val commerces: List<Commerce>) : MainViewState()
-    data class Error(val error: String) : MainViewState()
 }

@@ -16,7 +16,7 @@ data class Commerce(
 ) {
 
     fun setDistance(coordinates: Location) {
-        var commerceLocation = Location("CommerceLocation")
+        val commerceLocation = Location("CommerceLocation")
         commerceLocation.latitude = location.second
         commerceLocation.longitude = location.first
         this.distance = coordinates.distanceTo(commerceLocation).toInt()

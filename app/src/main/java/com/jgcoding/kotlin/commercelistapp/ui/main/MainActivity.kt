@@ -8,23 +8,32 @@ import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.compose.rememberNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.location.LocationServices
 import com.jgcoding.kotlin.commercelistapp.R
 import com.jgcoding.kotlin.commercelistapp.core.Extensions.setStatusBar
 import com.jgcoding.kotlin.commercelistapp.core.Network
+import com.jgcoding.kotlin.commercelistapp.core.systemdesign.CommerceListTheme
 import com.jgcoding.kotlin.commercelistapp.databinding.ActivityMainBinding
 import com.jgcoding.kotlin.commercelistapp.domain.model.Commerce
+import com.jgcoding.kotlin.commercelistapp.ui.Navigation
+import com.jgcoding.kotlin.commercelistapp.ui.common.Result
+import com.jgcoding.kotlin.commercelistapp.ui.compose.components.Toolbar
 import com.jgcoding.kotlin.commercelistapp.ui.detail.DetailActivity
 import com.jgcoding.kotlin.commercelistapp.ui.main.adapter.CommerceAdapter
 import com.jgcoding.kotlin.commercelistapp.ui.main.viewmodel.MainViewModel
-import com.jgcoding.kotlin.commercelistapp.ui.main.viewmodel.MainViewState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -49,22 +58,45 @@ class MainActivity : AppCompatActivity() {
     private var foodList = emptyList<Commerce>()
     private var leisureList = emptyList<Commerce>()
 
+    @Preview(showBackground = true)
+    @Composable
+    fun CustomToolbarPreview() {
+        CommerceListTheme {
+            val navController = rememberNavController()
+            Toolbar(navController = navController, title = "Commerce Lists", isBack = false)
+        }
+    }
+
     //region LC
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
-        val action: String? = intent?.action
-        val data: Uri? = intent?.data
-        Log.i(TAG, "onCreate: $data")
-        Log.i(TAG, "onCreate: $action")
-
-        if(!Network.checkConnectivity(this)) {
-            Toast.makeText(this, getString(R.string.error_connectivity), Toast.LENGTH_SHORT).show()
+        setContent {
+            Navigation()
+//            CommerceListTheme {
+//                val navController = rememberNavController()
+//                // A surface container using the 'background' color from the theme
+//                Surface(
+//                    color = MaterialTheme.colorScheme.background
+//                ) {
+//                    //TODO SCREEN AND NAVIGATION
+//                    Toolbar(navController = navController, title = getString(R.string.commerces_list), isBack = false)
+//                }
+//            }
         }
-        getMyCoordinates()
-        setUpview()
+
+//        binding = ActivityMainBinding.inflate(layoutInflater)
+//        setContentView(binding.root)
+//
+//        val action: String? = intent?.action
+//        val data: Uri? = intent?.data
+//        Log.i(TAG, "onCreate: $data")
+//        Log.i(TAG, "onCreate: $action")
+//
+//        if(!Network.checkConnectivity(this)) {
+//            Toast.makeText(this, getString(R.string.error_connectivity), Toast.LENGTH_SHORT).show()
+//        }
+//        getMyCoordinates()
+//        setUpview()
     }
 
     override fun onNewIntent(intent: Intent?) {
@@ -120,7 +152,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        initUIState()
+//        initUIState()
     }
 
     private fun setUpRecyclerView(list: MutableList<Commerce>) {
@@ -142,21 +174,21 @@ class MainActivity : AppCompatActivity() {
         binding.includeProgress.root.isVisible = false
     }
 
-    private fun successState(state: MainViewState.Success) {
+    private fun successState(state: List<Commerce>) {
         var counterOfNearCommerces = 0
-        for (commerce in state.commerces) {
+        for (commerce in state) {
             commerce.setDistance(coordinates)
             if (commerce.checkDistance())
                 counterOfNearCommerces++
         }
 
-        list = state.commerces.sortedBy {
+        list = state.sortedBy {
             it.distance
         }
 
         binding.includeProgress.root.isVisible = false
         binding.apply {
-            txtNumberCommerces.text = state.commerces.size.toString()
+            txtNumberCommerces.text = state.size.toString()
             txtNumberCommercesNear.text = counterOfNearCommerces.toString()
         }
 
@@ -167,17 +199,17 @@ class MainActivity : AppCompatActivity() {
     //endregion
 
     //region METHODS
-    private fun initUIState() {
-        lifecycleScope.launch {
-            viewModel.uiState.collect {
-                when (it) {
-                    is MainViewState.Error -> errorState()
-                    MainViewState.Loading -> loadingState()
-                    is MainViewState.Success -> successState(it)
-                }
-            }
-        }
-    }
+//    private fun initUIState() {
+//        lifecycleScope.launch {
+//            viewModel.uiState.collect {
+//                when (it) {
+//                    is Result.Error -> errorState()
+//                    Result.Loading -> loadingState()
+//                    is Result.Success -> successState(it.data)
+//                }
+//            }
+//        }
+//    }
 
     private fun getMyCoordinates() {
         val fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)

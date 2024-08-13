@@ -14,7 +14,7 @@ interface CommerceDao {
     fun getAllCommerces(): Flow<List<CommerceEntity>>
 
     @Query("SELECT * FROM commerces_table WHERE id = :id")
-    fun getCommerceById(id: Int): Flow<CommerceEntity>
+    fun getCommerceById(id: Int): Flow<CommerceEntity?>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertCommerces(commerces: List<CommerceEntity>)

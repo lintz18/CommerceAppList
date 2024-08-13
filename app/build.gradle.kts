@@ -67,6 +67,7 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.11.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+    implementation("androidx.navigation:navigation-runtime-ktx:2.7.7")
 
     //TEST
     testImplementation("junit:junit:4.13.2")
@@ -117,6 +118,16 @@ dependencies {
     implementation("androidx.compose.ui:ui:1.4.3")
     implementation("androidx.compose.ui:ui-tooling-preview:1.4.3")
     implementation("androidx.compose.material3:material3:1.1.1")
+    implementation("androidx.compose.material:material:<version>")
+    implementation("androidx.compose.ui:ui-tooling:1.4.3")
+    implementation("androidx.compose.runtime:runtime-livedata:1.4.3")
+    implementation("androidx.navigation:navigation-compose:2.7.7")
+    implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
+
+    //COIL
+    implementation("io.coil-kt:coil-compose:2.4.0")
+
+
 }
 
 kapt {

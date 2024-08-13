@@ -1,0 +1,23 @@
+package com.jgcoding.kotlin.commercelistapp.ui.common
+
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.*
+
+sealed interface Result<out T> {
+    data class Success<T>(val data: T) : Result<T>
+    data class Error(val exception: Throwable) : Result<Nothing>
+    data object Loading : Result<Nothing>
+}
+
+fun <T> Result<T>.ifSuccess(block: (T) -> Unit) {
+    if (this is Result.Success) block(data)
+}
+
+fun <T> Flow<T>.stateAsResultIn(scope: CoroutineScope): StateFlow<Result<T>> =
+    map<T, Result<T>> { Result.Success(it) }
+        .catch { emit(Result.Error(it)) }
+        .stateIn(
+            scope = scope,
+            started = SharingStarted.WhileSubscribed(5_000),
+            initialValue = Result.Loading
+        )

@@ -3,12 +3,8 @@ package com.jgcoding.kotlin.commercelistapp.di
 import android.app.Application
 import androidx.room.Room
 import com.jgcoding.kotlin.commercelistapp.BuildConfig.BASE_URL
-import com.jgcoding.kotlin.commercelistapp.data.RepositoryImpl
 import com.jgcoding.kotlin.commercelistapp.data.database.CommerceDatabase
-import com.jgcoding.kotlin.commercelistapp.data.database.Converter
-import com.jgcoding.kotlin.commercelistapp.data.database.dao.CommerceDao
 import com.jgcoding.kotlin.commercelistapp.data.network.ApiService
-import com.jgcoding.kotlin.commercelistapp.domain.Repository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -61,8 +57,4 @@ object AppModule {
     @Provides
     fun provideCommerceDao(db: CommerceDatabase) = db.getCommerceDao()
 
-    @Singleton
-    @Provides
-    fun provideRepository(apiService: ApiService, dao: CommerceDao): Repository =
-        RepositoryImpl(apiService, dao)
 }
