@@ -7,15 +7,16 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jgcoding.kotlin.commercelistapp.R
-import com.jgcoding.kotlin.commercelistapp.core.systemdesign.dark_blue
-import com.jgcoding.kotlin.commercelistapp.core.systemdesign.white
+import com.jgcoding.kotlin.commercelistapp.core.systemdesign.*
 
 @Composable
 fun CategoryCard(
@@ -28,18 +29,23 @@ fun CategoryCard(
     Surface(
 
     ) {
-        Box(
+        Row(
             modifier = modifier
-                .background(
-                    color = backgroundColor, // Color de fondo de la Box
-                    shape = RoundedCornerShape(16.dp) // Borde redondeado
-                )
-                .padding(horizontal = 16.dp, vertical = 24.dp)
+                .clip(shape = RoundedCornerShape(16.dp))
+                .background(color = backgroundColor)
+                .padding(12.dp),
+            verticalAlignment = Alignment.CenterVertically, // Centra verticalmente el contenido
+            horizontalArrangement = Arrangement.Start // Alinea el contenido al inicio
         ) {
-            Image(painter = painterResource(id = icon), contentDescription = "Icon")
+            Image(
+                modifier = modifier.height(24.dp).width(24.dp),
+                painter = painterResource(id = icon),
+                contentDescription = "Icon"
+            )
+            Spacer(modifier = Modifier.width(8.dp))
             Text(
                 text = text,
-                fontSize = 16.sp
+                fontSize = 12.sp
             )
         }
     }

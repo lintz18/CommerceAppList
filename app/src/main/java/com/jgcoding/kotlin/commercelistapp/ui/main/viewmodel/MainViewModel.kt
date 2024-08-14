@@ -22,12 +22,19 @@ class MainViewModel @Inject constructor(
 
     private val uiReady = MutableStateFlow(false)
 
+    var categoriesList: List<String> = emptyList()
+
     @OptIn(ExperimentalCoroutinesApi::class)
     val state: StateFlow<Result<List<Commerce>>> = uiReady
         .filter { it }
         .flatMapLatest {
-            getCommercesUseCase().onEach {
-                it.map { commerce ->
+            getCommercesUseCase().onEach { list ->
+
+                categoriesList = list.map { commerce ->
+                    commerce.category
+                }.distinct()
+
+                list.map { commerce ->
                     commerce.setDistance(coordinates)
                 }
             }
