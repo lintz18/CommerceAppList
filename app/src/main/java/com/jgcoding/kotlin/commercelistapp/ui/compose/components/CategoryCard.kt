@@ -1,7 +1,6 @@
 package com.jgcoding.kotlin.commercelistapp.ui.compose.components
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Surface
@@ -24,10 +23,14 @@ fun CategoryCard(
     backgroundColor: Color = white,
     icon: Int,
     text: String,
+    onClick: (String) -> Unit
 ) {
 
     Surface(
-
+        shape = RoundedCornerShape(16.dp),
+        modifier = modifier
+            .background(color = transparent)
+            .clickable { onClick(text) }
     ) {
         Row(
             modifier = modifier
@@ -36,6 +39,7 @@ fun CategoryCard(
                 .padding(12.dp),
             verticalAlignment = Alignment.CenterVertically, // Centra verticalmente el contenido
             horizontalArrangement = Arrangement.Start // Alinea el contenido al inicio
+
         ) {
             Image(
                 modifier = modifier.height(24.dp).width(24.dp),
@@ -57,6 +61,7 @@ fun CategoryCard(
 fun CategoryCard() {
     CategoryCard(
         icon = R.drawable.cart_colour,
-        text = "Category Text"
+        text = "Category Text",
+        onClick = {}
     )
 }

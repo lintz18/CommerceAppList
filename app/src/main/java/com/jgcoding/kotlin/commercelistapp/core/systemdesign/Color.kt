@@ -25,6 +25,9 @@ val gray_text_color: Color
 val purple: Color
     get() = Color(0xFFFF9438)
 
+val transparent: Color
+    get() = Color(0X00000000)
+
 @Immutable
 data class AppColors(
     val normalText: Color,
