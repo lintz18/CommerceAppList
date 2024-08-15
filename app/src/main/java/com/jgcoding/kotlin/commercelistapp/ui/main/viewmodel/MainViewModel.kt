@@ -1,8 +1,7 @@
 package com.jgcoding.kotlin.commercelistapp.ui.main.viewmodel
 
 import android.location.Location
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.jgcoding.kotlin.commercelistapp.domain.model.Commerce
 import com.jgcoding.kotlin.commercelistapp.domain.usecase.*
 import com.jgcoding.kotlin.commercelistapp.ui.common.Result
@@ -60,10 +59,14 @@ class MainViewModel @Inject constructor(
         } else {
             allCommerces.filter { it.category.contains(s, ignoreCase = true) }
         }
+    }
 
-//        _filteredCommerces.value = (state.value as? Result.Success)?.data.orEmpty().filter {
-//            it.category.contains(s, ignoreCase = true)
-//        }
+    private var _scrollToTop = MutableStateFlow(false)
+    val scrollToTop: StateFlow<Boolean>
+        get() = _scrollToTop
+
+    fun updateScrollToTop(scroll: Boolean) {
+        _scrollToTop.value = scroll
     }
 
 }
