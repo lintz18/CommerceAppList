@@ -3,18 +3,22 @@ package com.jgcoding.kotlin.commercelistapp.ui.detail.viewmodel
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.jgcoding.kotlin.commercelistapp.di.CommerceId
 import com.jgcoding.kotlin.commercelistapp.domain.model.Commerce
 import com.jgcoding.kotlin.commercelistapp.domain.usecase.GetCommerceIdUseCase
+import com.jgcoding.kotlin.commercelistapp.ui.common.Result
+import com.jgcoding.kotlin.commercelistapp.ui.common.stateAsResultIn
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class DetailViewModel @Inject constructor(private val getCommerceIdUseCase: GetCommerceIdUseCase): ViewModel() {
+class DetailViewModel @Inject constructor(
+    @CommerceId id: Int,
+    private val getCommerceIdUseCase: GetCommerceIdUseCase
+): ViewModel() {
 
     companion object {
         private const val TAG = "DetailViewModel"
@@ -35,6 +39,9 @@ class DetailViewModel @Inject constructor(private val getCommerceIdUseCase: GetC
         }
 
     }
+
+    val state: StateFlow<Result<Commerce>> = getCommerceIdUseCase(id)
+        .stateAsResultIn(scope = viewModelScope)
 }
 
 sealed class DetailViewState {

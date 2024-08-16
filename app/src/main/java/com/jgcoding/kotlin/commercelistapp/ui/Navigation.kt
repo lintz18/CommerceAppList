@@ -25,9 +25,9 @@ fun Navigation() {
             route = NavScreen.Detail.route,
             arguments = listOf(navArgument(NavArgs.CommerceId.key) { type = NavType.IntType })
         ) { backStackEntry ->
-            val movieId = requireNotNull(backStackEntry.arguments?.getInt(NavArgs.CommerceId.key))
+//            val commerceId = requireNotNull(backStackEntry.arguments?.getInt(NavArgs.CommerceId.key))
             DetailScreen(
-//                onBack = { navController.popBackStack() }
+                onBack = { navController.popBackStack() }
             )
         }
     }
