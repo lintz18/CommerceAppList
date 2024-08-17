@@ -16,6 +16,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
+import com.google.android.gms.maps.model.CameraPosition
+import com.google.android.gms.maps.model.LatLng
+import com.google.maps.android.compose.GoogleMap
+import com.google.maps.android.compose.rememberCameraPositionState
 import com.jgcoding.kotlin.commercelistapp.R
 import com.jgcoding.kotlin.commercelistapp.core.systemdesign.white
 import com.jgcoding.kotlin.commercelistapp.domain.model.Commerce
@@ -52,7 +56,7 @@ fun DetailScreen(
             },
             modifier = Modifier.nestedScroll(detailState.scrollBehavior.nestedScrollConnection)
         ) { padding, commerce ->
-            MovieDetail(
+            CommerceDetail(
                 commerce = commerce,
                 modifier = Modifier.padding(padding)
             )
@@ -90,37 +94,54 @@ private fun DetailTopBar(
 }
 
 @Composable
-private fun MovieDetail(
+private fun CommerceDetail(
     commerce: Commerce,
     modifier: Modifier = Modifier
 ) {
+    val cameraPositionState = rememberCameraPositionState {
+        position = CameraPosition.fromLatLngZoom(LatLng(commerce.location.first, commerce.location.second), 10f) // San Francisco
+    }
+
     Column(
         modifier = modifier.verticalScroll(rememberScrollState())
+            .fillMaxSize()
     ) {
         AsyncImage(
             model = commerce.photo,
             contentDescription = commerce.name,
-            contentScale = ContentScale.Fit,
+            contentScale = ContentScale.Crop,
             placeholder = painterResource(id = R.drawable.placeholder),
             error = painterResource(id = R.drawable.placeholder),
             modifier = Modifier
                 .fillMaxWidth()
-                .aspectRatio(16 / 9f)
+                .aspectRatio(16 / 10f)
         )
-        Text(text = commerce.address, modifier = Modifier.padding(16.dp))
         Text(
-            text = buildAnnotatedString {
-//                Property("Original language", movie.originalLanguage)
-//                Property("Original title", movie.originalTitle)
-//                Property("Release date", movie.releaseDate)
-//                Property("Popularity", movie.popularity.toString())
-//                Property("Vote average", movie.voteAverage.toString(), true)
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(color = MaterialTheme.colorScheme.secondaryContainer)
-                .padding(16.dp)
+            text = commerce.address,
+            modifier = Modifier.padding(16.dp)
         )
+//        Text(
+//            text = buildAnnotatedString {
+////                Property("Original language", movie.originalLanguage)
+////                Property("Original title", movie.originalTitle)
+////                Property("Release date", movie.releaseDate)
+////                Property("Popularity", movie.popularity.toString())
+////                Property("Vote average", movie.voteAverage.toString(), true)
+//            },
+//            modifier = Modifier
+//                .fillMaxWidth()
+//                .background(color = MaterialTheme.colorScheme.secondaryContainer)
+//                .padding(16.dp)
+//        )
+
+        GoogleMap(
+            modifier = Modifier
+                .height(300.dp)
+                .fillMaxWidth(),
+            cameraPositionState = cameraPositionState
+        )
+
+
     }
 }
 
