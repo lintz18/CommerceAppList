@@ -1,12 +1,14 @@
 package com.jgcoding.kotlin.commercelistapp.ui.main
 
 import android.Manifest
+import android.annotation.SuppressLint
+import android.location.Location
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.*
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.*
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.SnackbarDefaults.backgroundColor
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -16,6 +18,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -23,6 +26,9 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.tasks.Task
 import com.jgcoding.kotlin.commercelistapp.R
 import com.jgcoding.kotlin.commercelistapp.core.systemdesign.*
 import com.jgcoding.kotlin.commercelistapp.domain.model.Commerce
@@ -31,7 +37,6 @@ import com.jgcoding.kotlin.commercelistapp.ui.compose.components.CategoryCard
 import com.jgcoding.kotlin.commercelistapp.ui.compose.components.SimpleCard
 import com.jgcoding.kotlin.commercelistapp.ui.main.viewmodel.MainViewModel
 import kotlinx.coroutines.launch
-import org.checkerframework.checker.units.qual.s
 
 
 @Composable
@@ -39,9 +44,21 @@ fun MainScreen(
     vm: MainViewModel = hiltViewModel(),
     onCommerceClick: (Commerce) -> Unit
 ) {
-    PermissionRequestEffect(permission = Manifest.permission.ACCESS_COARSE_LOCATION) {
+
+    val context = LocalContext.current
+    val fusedLocationClient = remember { LocationServices.getFusedLocationProviderClient(context) }
+
+    PermissionRequestEffect(permission = Manifest.permission.ACCESS_FINE_LOCATION) {
+        getLastKnownLocation(fusedLocationClient) { loc ->
+            vm.location = loc
+        }
         vm.onUiReady()
     }
+//    PermissionRequestEffect(permission = Manifest.permission.ACCESS_FINE_LOCATION) {
+//        getLastKnownLocation(fusedLocationClient) { loc ->
+//            location = loc
+//        }
+//    }
 
     val state by vm.state.collectAsState()
     val filteredCommerces by vm.filteredCommerces.collectAsState()
@@ -246,5 +263,19 @@ fun getCategoryColor(category: String): Color {
         "leisure" -> orange
         "shopping" -> gray_text_color
         else -> black
+    }
+}
+
+@SuppressLint("MissingPermission")
+private fun getLastKnownLocation(
+    fusedLocationClient: FusedLocationProviderClient,
+    onLocationResult: (Location?) -> Unit
+) {
+    fusedLocationClient.lastLocation.addOnCompleteListener { task: Task<Location> ->
+        if (task.isSuccessful && task.result != null) {
+            onLocationResult(task.result)
+        } else {
+            onLocationResult(null)
+        }
     }
 }

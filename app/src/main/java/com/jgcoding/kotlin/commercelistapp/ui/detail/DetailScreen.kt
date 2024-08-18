@@ -18,8 +18,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
-import com.google.maps.android.compose.GoogleMap
-import com.google.maps.android.compose.rememberCameraPositionState
+import com.google.maps.android.compose.*
 import com.jgcoding.kotlin.commercelistapp.R
 import com.jgcoding.kotlin.commercelistapp.core.systemdesign.white
 import com.jgcoding.kotlin.commercelistapp.domain.model.Commerce
@@ -99,7 +98,7 @@ private fun CommerceDetail(
     modifier: Modifier = Modifier
 ) {
     val cameraPositionState = rememberCameraPositionState {
-        position = CameraPosition.fromLatLngZoom(LatLng(commerce.location.first, commerce.location.second), 10f) // San Francisco
+        position = CameraPosition.fromLatLngZoom(LatLng(commerce.location.second, commerce.location.first), 15f) // Inverted Lat Long in API service
     }
 
     Column(
@@ -117,31 +116,28 @@ private fun CommerceDetail(
                 .aspectRatio(16 / 10f)
         )
         Text(
-            text = commerce.address,
+            text = buildAnnotatedString {
+                Property("Servicio", commerce.name)
+                Property("Dirección", commerce.address)
+                Property("Categoría", commerce.category)
+                Property("Horario", commerce.openingHours)
+                Property("Localización", commerce.location.toString())
+                Property("Cashback", "${commerce.cashback}%", true)
+            },
             modifier = Modifier.padding(16.dp)
         )
-//        Text(
-//            text = buildAnnotatedString {
-////                Property("Original language", movie.originalLanguage)
-////                Property("Original title", movie.originalTitle)
-////                Property("Release date", movie.releaseDate)
-////                Property("Popularity", movie.popularity.toString())
-////                Property("Vote average", movie.voteAverage.toString(), true)
-//            },
-//            modifier = Modifier
-//                .fillMaxWidth()
-//                .background(color = MaterialTheme.colorScheme.secondaryContainer)
-//                .padding(16.dp)
-//        )
-
         GoogleMap(
             modifier = Modifier
                 .height(300.dp)
-                .fillMaxWidth(),
-            cameraPositionState = cameraPositionState
-        )
-
-
+                .fillMaxWidth()
+                .padding(bottom = 16.dp),
+            cameraPositionState = cameraPositionState,
+        ) {
+            Marker(
+                state = rememberMarkerState(position = LatLng(commerce.location.second, commerce.location.first)),
+                title = commerce.name
+            )
+        }
     }
 }
 

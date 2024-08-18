@@ -17,7 +17,7 @@ class MainViewModel @Inject constructor(
 ) :
     ViewModel() {
 
-    private var coordinates: Location = Location("MyLocation")
+    var location: Location? = null
 
     private val uiReady = MutableStateFlow(false)
 
@@ -40,7 +40,9 @@ class MainViewModel @Inject constructor(
                 categoriesList.sortBy { it.lowercase() }
 
                 list.map { commerce ->
-                    commerce.setDistance(coordinates)
+                    location?.let {
+                        commerce.setDistance(it)
+                    }
                 }
                 _filteredCommerces.value = list
             }
