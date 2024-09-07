@@ -19,7 +19,7 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        resValue ("string", "API_KEY", "")
+        resValue ("string", "API_KEY", "AIzaSyADamxp-4EhHwg3H7z9kYOPwtBSm7GIz-A")
     }
 
     buildTypes {
@@ -57,6 +57,7 @@ android {
 }
 
 dependencies {
+    implementation("androidx.compose.ui:ui-test-junit4-android:1.7.0")
     val room_version = "2.6.1"
     val hilt_version = "2.48"
     val retrofit_version = "2.9.0"
@@ -73,6 +74,8 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    androidTestImplementation("androidx.test:runner:1.5.2")
+    androidTestImplementation("androidx.test:rules:1.5.0")
     testImplementation("junit:junit:4.+")
     testImplementation("io.mockk:mockk:1.12.2")
 

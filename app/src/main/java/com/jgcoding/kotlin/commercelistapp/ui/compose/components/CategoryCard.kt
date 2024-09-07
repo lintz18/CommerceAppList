@@ -40,7 +40,7 @@ fun CategoryCard(
         Row(
             modifier = modifier
                 .clip(shape = RoundedCornerShape(16.dp))
-                .background(color = rowBackgroundColor)
+                .background(color = Color.LightGray)
                 .padding(12.dp)
                 .clickable {
                     onClick(text)
