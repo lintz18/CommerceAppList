@@ -1,12 +1,4 @@
-package com.jgcoding.kotlin.commercelistapp.view
-
-import android.content.Intent
-import androidx.test.core.app.ActivityScenario
-import androidx.test.core.app.ApplicationProvider
-import com.jgcoding.kotlin.commercelistapp.ui.main.MainActivity
-import junit.framework.TestCase.assertEquals
-import org.junit.Test
-import org.junit.runner.RunWith
+package com.jgcoding.kotlin.commercelistapp.ui
 
 //@RunWith(AndroidJUnit4::class)
 class DetailActivityTest {

@@ -57,7 +57,6 @@ android {
 }
 
 dependencies {
-    implementation("androidx.compose.ui:ui-test-junit4-android:1.7.0")
     val room_version = "2.6.1"
     val hilt_version = "2.48"
     val retrofit_version = "2.9.0"
@@ -78,6 +77,9 @@ dependencies {
     androidTestImplementation("androidx.test:rules:1.5.0")
     testImplementation("junit:junit:4.+")
     testImplementation("io.mockk:mockk:1.12.2")
+    implementation("androidx.compose.ui:ui-test-junit4-android:1.7.0")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4")
+    testImplementation("app.cash.turbine:turbine:1.0.0")
 
     // Fragment
     implementation("androidx.fragment:fragment-ktx:1.6.0")
