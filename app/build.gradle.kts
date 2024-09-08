@@ -19,7 +19,7 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        resValue ("string", "API_KEY", "AIzaSyADamxp-4EhHwg3H7z9kYOPwtBSm7GIz-A")
+        resValue ("string", "API_KEY", "")
     }
 
     buildTypes {
