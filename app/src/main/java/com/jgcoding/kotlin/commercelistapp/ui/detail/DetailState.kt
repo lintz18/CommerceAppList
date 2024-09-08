@@ -1,6 +1,5 @@
 package com.jgcoding.kotlin.commercelistapp.ui.detail
 
-import android.graphics.Movie
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember

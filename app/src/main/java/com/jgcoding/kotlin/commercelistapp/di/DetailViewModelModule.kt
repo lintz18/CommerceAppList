@@ -15,7 +15,7 @@ class DetailViewModelModule {
     @Provides
     @ViewModelScoped
     @CommerceId
-    fun provideMovieId(savedStateHandle: SavedStateHandle): Int {
+    fun provideCommerceId(savedStateHandle: SavedStateHandle): Int {
         return savedStateHandle[NavArgs.CommerceId.key] ?: -1
     }
 

@@ -22,7 +22,7 @@ class FakeLocalDataSource : CommerceLocalDataSource {
     override val commerces = inMemoryCommerces
 
     override fun findCommerceById(id: Int): Flow<Commerce?> =
-        inMemoryCommerces.map { it.firstOrNull { movie -> movie.id == id } }
+        inMemoryCommerces.map { it.firstOrNull { commerce -> commerce.id == id } }
 
 
     override suspend fun save(commerces: List<Commerce>) {

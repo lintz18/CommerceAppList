@@ -39,7 +39,7 @@ class DetailScreenTest {
     }
 
     @Test
-    fun whenSuccessState_movieIsShown(): Unit = with(composeTestRule) {
+    fun whenSuccessState_commerceIsShown(): Unit = with(composeTestRule) {
         val id = 1
         setContent {
             DetailScreen(

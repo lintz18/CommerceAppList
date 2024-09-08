@@ -1,6 +1,5 @@
 package com.jgcoding.kotlin.commercelistapp.data
 
-import android.graphics.Movie
 import com.jgcoding.kotlin.commercelistapp.data.database.datasource.CommerceLocalDataSource
 import com.jgcoding.kotlin.commercelistapp.data.network.CommerceRemoteDataSource
 import com.jgcoding.kotlin.commercelistapp.domain.model.Commerce

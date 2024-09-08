@@ -44,15 +44,15 @@ class MainViewModelTest {
     }
 
     @Test
-    fun `Movies are requested if UI is ready`() = runTest {
-        val movies = sampleCommerces(1, 2, 3)
-        whenever(fetchCommercesUseCase()).thenReturn(flowOf(movies))
+    fun `Commerces are requested if UI is ready`() = runTest {
+        val commerces = sampleCommerces(1, 2, 3)
+        whenever(fetchCommercesUseCase()).thenReturn(flowOf(commerces))
 
         vm.onUiReady()
 
         vm.state.test {
             assertEquals(Result.Loading, awaitItem())
-            assertEquals(Result.Success(movies), awaitItem())
+            assertEquals(Result.Success(commerces), awaitItem())
         }
     }
 

@@ -28,7 +28,7 @@ class DetailIntegrationTest {
     }
 
     @Test
-    fun `UI is updated with the movie on start`() = runTest {
+    fun `UI is updated with the commerce on start`() = runTest {
         vm.state.test {
             assertEquals(Loading, awaitItem())
             assertEquals(Success(sampleCommerce(2)), awaitItem())
