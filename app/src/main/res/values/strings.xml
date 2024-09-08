@@ -14,4 +14,5 @@
     <string name="hour_info">Horario</string>
     <string name="cashback_info">Cashback:</string>
     <string name="error_connectivity">No tienes conexión a internet</string>
+    <string name="back">Volver</string>
 </resources>

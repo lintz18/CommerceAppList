@@ -5,7 +5,6 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import com.jgcoding.kotlin.commercelistapp.core.testing.sampleCommerces
 import com.jgcoding.kotlin.commercelistapp.ui.common.LOADING_INDICATOR_TAG
 import com.jgcoding.kotlin.commercelistapp.ui.common.Result
-import com.jgcoding.kotlin.commercelistapp.ui.main.MainScreen
 import org.junit.*
 
 class MainScreenTest {

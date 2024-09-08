@@ -6,7 +6,6 @@ import com.jgcoding.kotlin.commercelistapp.core.testing.sampleCommerces
 import com.jgcoding.kotlin.commercelistapp.domain.usecase.GetCommercesUseCase
 import com.jgcoding.kotlin.commercelistapp.ui.common.Result
 import com.jgcoding.kotlin.commercelistapp.ui.main.viewmodel.MainViewModel
-import junit.framework.TestCase
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
